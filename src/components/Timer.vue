@@ -23,15 +23,18 @@ export default {
       this.$emit("timerClicked", this.player);
     },
     startTimer() {
-      this.intervalTimer = setInterval(this.reduceTime, 1000);
-      if (this.started === false) {
-        this.intervalTimer;
-      }
+      this.intervalTimer = setInterval(this.trackTime, 1000);
     },
     stopTimer() {
       clearInterval(this.intervalTimer);
     },
+    trackTime() {
+      setTimeout(() => {
+        this.timeTracker !== 1 ? this.reduceTime() : this.timeTracker--
+      }, 1);
+    },
     reduceTime() {
+      this.timeTracker = 1000;
       if (this.timerAmount === 1) {
         this.timedOut = true;
       }
@@ -55,9 +58,8 @@ export default {
       let minutes = Math.floor(formatedSeconds / 60);
       let seconds = formatedSeconds % 60;
 
-      return `${hours > 0 ? hours + ":" : ""}${minutes}:${
-        seconds < 10 ? "0" : ""
-      }${seconds}`;
+      return `${hours > 0 ? hours + ":" : ""}${minutes}:${seconds < 10 ? "0" : ""
+        }${seconds}`;
     },
   },
   data() {
@@ -67,6 +69,7 @@ export default {
       intervalTimer: null,
       timedOut: false,
       timerCount: 0,
+      timeTracker: 1000,
     };
   },
   created() {
